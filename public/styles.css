@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom animations */
+@keyframes cardFlip {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(180deg); }
+}
+
+.card-flip {
+  animation: cardFlip 0.6s ease-in-out;
+}
+
+/* Custom styles for cards */
+.card {
+  @apply relative w-24 h-36 bg-white rounded-lg shadow-lg cursor-pointer transition-transform duration-200;
+}
+
+.card:hover {
+  @apply transform scale-110;
+}
+
+/* Game container */
+.game-container {
+  @apply min-h-screen bg-gradient-to-b from-blue-50 to-blue-100;
+}
+
+/* Statistics panel */
+.stats-panel {
+  @apply bg-white rounded-lg shadow-md p-4;
+}
