@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPS Card Game</title>
-    <link href="styles.css" rel="stylesheet">
-    <!-- Add favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <!-- Add Tailwind directly from CDN for now -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Remove direct stylesheet link since Parcel will handle it -->
 </head>
 <body>
     <div id="root"></div>
-    <!-- Change to type="module" -->
-    <script type="module" src="app.js"></script>
+    <!-- Important: Add type="module" -->
+    <script type="module" src="./app.js"></script>
 </body>
 </html>
