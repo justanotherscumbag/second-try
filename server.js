@@ -1,11 +1,15 @@
-const express = require('express');
-const { Server } = require('socket.io');
-const http = require('http');
-const path = require('path');
-const cors = require('cors');
+import express from 'express';
+import { Server } from 'socket.io';
+import { createServer } from 'http';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import cors from 'cors';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
-const server = http.createServer(app);
+const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -18,14 +22,14 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the 'dist' directory (where Parcel builds to)
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(join(__dirname, 'dist')));
 
 // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(join(__dirname, 'public')));
 
 // Handle all routes by serving index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(join(__dirname, 'dist', 'index.html'));
 });
 
 // Game state storage
@@ -39,12 +43,11 @@ class Game {
     this.deck = this.createDeck();
     this.round = 0;
     this.maxRounds = 10;
-    this.gameState = 'waiting'; // waiting, playing, finished
+    this.gameState = 'waiting';
   }
 
   createDeck() {
     const deck = [];
-    // Create 45 cards total (15 of each type)
     ['rock', 'paper', 'scissors'].forEach(type => {
       for (let i = 0; i < 15; i++) {
         deck.push(type);
@@ -92,27 +95,27 @@ class Game {
     const { hand, deck } = playerStats;
     const totalCards = Object.values(deck).reduce((a, b) => a + b, 0);
     
-    // Calculate probabilities of opponent having each type
     const probabilities = {
       rock: deck.rock / totalCards,
       paper: deck.paper / totalCards,
       scissors: deck.scissors / totalCards
     };
     
-    // Calculate expected value for each choice
     const expectedValues = {
       rock: probabilities.scissors - probabilities.paper,
       paper: probabilities.rock - probabilities.scissors,
       scissors: probabilities.paper - probabilities.rock
     };
     
-    // Return the choice with highest expected value
     return Object.entries(expectedValues).reduce((a, b) => a[1] > b[1] ? a : b)[0];
   }
 }
 
 io.on('connection', (socket) => {
+  console.log('New client connected');
+  
   socket.on('join_game', ({ username, gameId }) => {
+    console.log(`${username} joining game ${gameId}`);
     let game = games.get(gameId);
     
     if (!game) {
@@ -132,7 +135,6 @@ io.on('connection', (socket) => {
       const hands = game.dealCards();
       game.gameState = 'playing';
       
-      // Send initial game state to both players
       hands.forEach((hand, playerId) => {
         const stats = game.calculateStatistics(hand, game.deck);
         io.to(playerId).emit('game_start', {
@@ -148,7 +150,6 @@ io.on('connection', (socket) => {
   socket.on('play_card', ({ gameId, card }) => {
     const game = games.get(gameId);
     if (!game || game.gameState !== 'playing') return;
-    
     // Handle round logic here
   });
 });
