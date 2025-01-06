@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "concurrently \"nodemon server.js\" \"npm run client\"",
-    "client": "parcel watch public/index.html",
-    "build": "parcel build public/index.html"
+    "dev": "concurrently \"nodemon server.js\" \"parcel watch public/index.html --out-dir dist\"",
+    "build": "parcel build public/index.html --out-dir dist",
+    "clean": "rm -rf dist .cache"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -29,5 +29,8 @@
   },
   "engines": {
     "node": ">=14.0.0"
-  }
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ]
 }
