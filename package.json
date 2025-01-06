@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "Rock Paper Scissors multiplayer card game",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "concurrently \"nodemon server.js\" \"parcel watch public/index.html --out-dir dist\"",
-    "build": "parcel build public/index.html --out-dir dist",
+    "build": "parcel build public/index.html --out-dir dist --public-url ./",
     "clean": "rm -rf dist .cache"
   },
   "dependencies": {
@@ -32,5 +33,8 @@
   },
   "browserslist": [
     "last 2 Chrome versions"
-  ]
+  ],
+  "alias": {
+    "process": false
+  }
 }
