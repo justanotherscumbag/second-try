@@ -1,6 +1,8 @@
 const express = require('express');
 const { Server } = require('socket.io');
 const http = require('http');
+const path = require('path');
+const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
@@ -9,6 +11,21 @@ const io = new Server(server, {
     origin: "*",
     methods: ["GET", "POST"]
   }
+});
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Serve static files from the 'dist' directory (where Parcel builds to)
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Handle all routes by serving index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // Game state storage
