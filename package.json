@@ -4,9 +4,9 @@
   "description": "Rock Paper Scissors multiplayer card game",
   "source": "public/index.html",
   "scripts": {
-    "start": "node server.js",
+    "start": "npm run build && node server.js",
     "dev": "parcel public/index.html",
-    "build": "parcel build public/index.html",
+    "build": "parcel build public/index.html --dist-dir dist --public-url ./",
     "clean": "rm -rf dist .parcel-cache"
   },
   "dependencies": {
@@ -14,16 +14,16 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "socket.io": "^4.7.2",
-    "socket.io-client": "^4.7.2"
+    "socket.io-client": "^4.7.2",
+    "parcel": "^2.10.0"
   },
   "devDependencies": {
     "@parcel/transformer-js": "^2.10.0",
     "@parcel/transformer-react-refresh-wrap": "^2.10.0",
     "buffer": "^6.0.3",
-    "parcel": "^2.10.0",
     "process": "^0.11.10"
   },
-  "alias": {
-    "process": false
+  "engines": {
+    "node": ">=14.0.0"
   }
 }
